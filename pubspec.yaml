@@ -39,6 +39,8 @@ dependencies:
   geolocator: ^9.0.2
   google_fonts: ^3.0.1
   google_maps_flutter: ^2.2.1
+  http: ^0.13.5
+  intl: ^0.18.0
   location: ^4.4.0
 
 dev_dependencies:

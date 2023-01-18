@@ -28,11 +28,13 @@ class TrackingPageState extends State<Tracking> {
   LocationData? currentLocation;
 
   void getCurrentlocation() async {
+    debugPrint("getCurrentLocation Jalan");
     Location location = Location();
 
     location.getLocation().then(
       (value) {
         currentLocation = value;
+        setState(() {});
       },
     );
 
@@ -54,6 +56,7 @@ class TrackingPageState extends State<Tracking> {
   }
 
   void getPolyPoints() async {
+    debugPrint("getPolyPoints Jalan");
     PolylinePoints polylinePoints = PolylinePoints();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       google_api_key,
@@ -74,6 +77,7 @@ class TrackingPageState extends State<Tracking> {
   }
 
   void setCustomMarkerIcon() {
+    debugPrint("setCustomMarkerIcon Jalan");
     BitmapDescriptor.fromAssetImage(
             ImageConfiguration.empty, "asset/location_source.png")
         .then((icon) {
@@ -101,6 +105,7 @@ class TrackingPageState extends State<Tracking> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("Tracking Page Jalan");
     return Scaffold(
       appBar: AppBar(
         title: const Text(

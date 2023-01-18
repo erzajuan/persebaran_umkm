@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:persebaran_umkm/pages/login.dart';
+import 'Bloc/app_blocs.dart';
+import 'Bloc/app_event.dart';
 import 'pages/home.dart';
 
 void main() {
@@ -39,7 +43,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Home(lat: lat, long: long),
+      home: const LoginPage(),
     );
     // home: SplashScreen(),
   }

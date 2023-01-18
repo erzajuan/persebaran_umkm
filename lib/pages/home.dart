@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:persebaran_umkm/Bloc/app_event.dart';
+import 'package:persebaran_umkm/Bloc/app_state.dart';
 import 'package:persebaran_umkm/model/toko_model.dart';
+import '../Bloc/app_blocs.dart';
 import '../common/style.dart';
 import 'detail.dart';
 import 'package:geolocator/geolocator.dart';
@@ -18,35 +23,23 @@ class Home extends StatelessWidget {
               style: TextStyle(color: Colors.white, fontSize: 22)),
           backgroundColor: primaryColor,
         ),
-        body: TourismPlaceList(lat: lat, long: long));
+        body: BlocProvider(
+          create: (context) => TokoBlocs()..add(LoadTokoEvent()),
+          child: RefreshIndicator(
+              onRefresh: () async {
+                TokoList(lat: lat, long: long);
+              },
+              child: TokoList(lat: lat, long: long)),
+        ));
   }
 }
 
-class TourismPlaceList extends StatefulWidget {
+class TokoList extends StatelessWidget {
   final double lat;
   final double long;
-
-  const TourismPlaceList({super.key, required this.lat, required this.long});
-
-  @override
-  State<TourismPlaceList> createState() => _TourismPlaceListState();
-}
-
-class _TourismPlaceListState extends State<TourismPlaceList> {
   final controller = TextEditingController();
 
-  List<Toko> umkm = tokoList;
-
-  void Search(String query) {
-    final suggestion = tokoList.where((toko) {
-      final judul = toko.name.toLowerCase();
-      final input = query.toLowerCase();
-
-      return judul.contains(input);
-    }).toList();
-
-    setState(() => umkm = suggestion);
-  }
+  TokoList({super.key, required this.lat, required this.long});
 
   @override
   Widget build(BuildContext context) {
@@ -67,70 +60,102 @@ class _TourismPlaceListState extends State<TourismPlaceList> {
                 borderSide: const BorderSide(color: primaryColor),
               ),
             ),
-            onChanged: Search,
+            onChanged: (String query) {
+              context.read<TokoBlocs>().add(SearchTokoEvent(query));
+            },
           ),
         ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: umkm.length,
-            itemBuilder: (_, index) {
-              final umkms = umkm[index];
-              return InkWell(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return Detail(
-                      umkm: umkms,
-                      lat: widget.lat,
-                      long: widget.long,
-                    );
-                  }));
-                },
-                child: Card(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: Image.asset(
-                          umkms.imageAsset,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
+        BlocBuilder<TokoBlocs, TokoState>(
+          builder: (context, state) {
+            if (state is TokoLoadingState) {
+              return const CircularProgressIndicator();
+            }
+            if (state is TokoLoadedState) {
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: state.umkm.length,
+                  itemBuilder: (_, index) {
+                    // List<DataListUmkm>? umkms = state.umkms;
+                    List<Toko> umkm = state.umkm;
+                    var formatter = NumberFormat('#.##');
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return Detail(
+                            umkm: umkm[index],
+                            // umkms: umkms[index],
+                            lat: lat,
+                            long: long,
+                          );
+                        }));
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(18),
+                        child: Card(
+                          child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text(
-                                umkms.name,
-                                style: heading1,
+                              Expanded(
+                                flex: 1,
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(18),
+                                      bottomRight: Radius.circular(18)),
+                                  child: Image.asset(
+                                    umkm[index].imageAsset,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Text(
-                                umkms.location,
-                                style: body,
-                              ),
-                              const SizedBox(
-                                height: 4,
-                              ),
-                              Text(
-                                "${(Geolocator.distanceBetween(umkms.lat, umkms.long, widget.lat, widget.long) / 1000).truncateToDouble()} KM",
-                                style: body,
-                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        umkm[index].name,
+                                        style: heading1,
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      Text(
+                                        umkm[index].location,
+                                        style: body,
+                                      ),
+                                      const SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        "${formatter.format((Geolocator.distanceBetween(umkm[index].lat, umkm[index].long, lat, long) / 1000))} KM",
+                                        style: body,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                         ),
-                      )
-                    ],
-                  ),
+                      ),
+                    );
+                  },
                 ),
               );
-            },
-          ),
+            }
+            if (state is TokoErrorState) {
+              return const Center(
+                child: Text("Error"),
+              );
+            }
+            return const Center(
+              child: Text("Error"),
+            );
+          },
         ),
       ],
     );

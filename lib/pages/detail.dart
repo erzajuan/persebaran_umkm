@@ -6,11 +6,17 @@ import 'package:persebaran_umkm/pages/tracking.dart';
 
 class Detail extends StatelessWidget {
   final Toko umkm;
+  // final DataListUmkm umkms;
   final double lat;
   final double long;
 
-  const Detail(
-      {super.key, required this.umkm, required this.lat, required this.long});
+  const Detail({
+    super.key,
+    required this.umkm,
+    required this.lat,
+    required this.long,
+    // required this.umkms
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +24,7 @@ class Detail extends StatelessWidget {
       builder: (BuildContext context, BoxConstraints constraints) {
         return DetailMobilePage(
           umkm: umkm,
+          // umkms: umkms,
           lat: lat,
           long: long,
         );
@@ -28,11 +35,17 @@ class Detail extends StatelessWidget {
 
 class DetailMobilePage extends StatelessWidget {
   final Toko umkm;
+  // final DataListUmkm umkms;
   final double lat;
   final double long;
 
-  const DetailMobilePage(
-      {super.key, required this.umkm, required this.lat, required this.long});
+  const DetailMobilePage({
+    super.key,
+    required this.umkm,
+    required this.lat,
+    required this.long,
+    // required this.umkms
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +80,7 @@ class DetailMobilePage extends StatelessWidget {
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
-                                icon: Icon(Icons.arrow_back),
+                                icon: const Icon(Icons.arrow_back),
                                 color: Colors.white,
                               ),
                             ),
@@ -78,7 +91,10 @@ class DetailMobilePage extends StatelessWidget {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
                                     return Tracking(
-                                      destination: LatLng(umkm.lat, umkm.long),
+                                      destination: LatLng(umkm.lat, umkm.long
+                                          // double.parse(umkm.lat),
+                                          // double.parse(umkm.long)
+                                          ),
                                       sourceLocation: LatLng(lat, long),
                                     );
                                   }));
@@ -104,7 +120,8 @@ class DetailMobilePage extends StatelessWidget {
                             child: Column(
                               children: [
                                 Container(
-                                  margin: EdgeInsets.symmetric(vertical: 16.0),
+                                  margin: const EdgeInsets.symmetric(
+                                      vertical: 16.0),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
