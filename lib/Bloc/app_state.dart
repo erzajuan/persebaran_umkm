@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:persebaran_umkm/model/toko_model.dart';
 import 'package:persebaran_umkm/model/umkm_model/data_list_umkm.dart';
 import 'package:persebaran_umkm/model/user/data_user.dart';
+import 'package:persebaran_umkm/model/user/user.dart';
 
 @immutable
 abstract class TokoState extends Equatable {}
@@ -34,7 +35,7 @@ class TokoErrorState extends TokoState {
 //Login State
 class UserLoadedState extends TokoState {
   UserLoadedState(this.user);
-  final List<DataUser>? user;
+  final UserModel user;
 
   @override
   List<Object?> get props => [user];

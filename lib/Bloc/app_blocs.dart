@@ -14,7 +14,7 @@ class TokoBlocs extends Bloc<TokoEvents, TokoState> {
 
     on<LoadTokoEvent>((event, emit) async {
       debugPrint("LoadTokoEvent");
-      listUmkm = await UserRepository().getUsers();
+      listUmkm = await UserRepository().getUmkm();
       emit(TokoLoadingState());
       try {
         debugPrint("load toko event");
@@ -27,7 +27,10 @@ class TokoBlocs extends Bloc<TokoEvents, TokoState> {
       try {
         final user =
             await UserRepository().authLogin(event.email, event.password);
-        emit(UserLoadedState(user));
+        if (user!.success!) {
+          emit(UserLoadedState(user));
+        }
+        emit(UserErrorState(user.message ?? "Kontol Error bae bangset"));
       } catch (e) {
         emit(UserErrorState(e.toString()));
       }

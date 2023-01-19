@@ -1,13 +1,13 @@
 import 'data_user.dart';
 
-class User {
+class UserModel {
   bool? success;
   String? message;
   DataUser? dataUser;
 
-  User({this.success, this.message, this.dataUser});
+  UserModel({this.success, this.message, this.dataUser});
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         success: json['success'] as bool?,
         message: json['message'] as String?,
         dataUser: json['data_user'] == null

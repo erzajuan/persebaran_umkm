@@ -34,11 +34,7 @@ class Home extends StatelessWidget {
                 },
               ),
             ]),
-        body: BlocProvider(
-            create: (BuildContext context) {
-              return TokoBlocs()..add(LoadTokoEvent());
-            },
-            child: TokoList(lat: lat, long: long)));
+        body: TokoList(lat: lat, long: long));
   }
 }
 
@@ -73,15 +69,15 @@ class TokoList extends StatelessWidget {
             },
           ),
         ),
-        BlocBuilder<TokoBlocs, TokoState>(
-          builder: (context, state) {
-            if (state is TokoLoadingState) {
-              debugPrint("Loading State");
-              return const CircularProgressIndicator();
-            }
-            if (state is TokoLoadedState) {
-              return Expanded(
-                child: ListView.builder(
+        Expanded(
+          child: BlocBuilder<TokoBlocs, TokoState>(
+            builder: (context, state) {
+              if (state is TokoLoadingState) {
+                debugPrint("Loading State");
+                return const CircularProgressIndicator();
+              }
+              if (state is TokoLoadedState) {
+                return ListView.builder(
                   itemCount: state.umkms?.length,
                   itemBuilder: (_, index) {
                     List<DataListUmkm>? umkms = state.umkms;
@@ -103,43 +99,36 @@ class TokoList extends StatelessWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Expanded(
-                                flex: 1,
-                                child: ClipRRect(
-                                    borderRadius: const BorderRadius.only(
-                                        topRight: Radius.circular(18),
-                                        bottomRight: Radius.circular(18)),
-                                    child: Image.network(
-                                        umkms![index].link_gambar)),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        umkms![index].name,
-                                        style: heading1,
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      Text(
-                                        umkms[index].location,
-                                        style: body,
-                                      ),
-                                      const SizedBox(
-                                        height: 4,
-                                      ),
-                                      Text(
-                                        "${formatter.format((Geolocator.distanceBetween(double.parse(umkms[index].lat), double.parse(umkms[index].long), lat, long) / 1000))} KM",
-                                        style: body,
-                                      ),
-                                    ],
-                                  ),
+                              ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(18),
+                                      bottomRight: Radius.circular(18)),
+                                  child:
+                                      Image.network(umkms![index].link_gambar)),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      umkms![index].name,
+                                      style: heading1,
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    Text(
+                                      umkms[index].location,
+                                      style: body,
+                                    ),
+                                    const SizedBox(
+                                      height: 4,
+                                    ),
+                                    Text(
+                                      "${formatter.format((Geolocator.distanceBetween(double.parse(umkms[index].lat), double.parse(umkms[index].long), lat, long) / 1000))} KM",
+                                      style: body,
+                                    ),
+                                  ],
                                 ),
                               )
                             ],
@@ -148,18 +137,18 @@ class TokoList extends StatelessWidget {
                       ),
                     );
                   },
-                ),
-              );
-            }
-            if (state is TokoErrorState) {
+                );
+              }
+              if (state is TokoErrorState) {
+                return const Center(
+                  child: Text("Error"),
+                );
+              }
               return const Center(
                 child: Text("Error"),
               );
-            }
-            return const Center(
-              child: Text("Error"),
-            );
-          },
+            },
+          ),
         ),
       ],
     );

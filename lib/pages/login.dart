@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:persebaran_umkm/Bloc/app_blocs.dart';
+import 'package:persebaran_umkm/Bloc/app_event.dart';
+import 'package:persebaran_umkm/Bloc/app_state.dart';
 import 'package:persebaran_umkm/common/style.dart';
 import 'package:persebaran_umkm/pages/home.dart';
 
@@ -93,53 +97,53 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 15,
               ),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(18),
-                child: SizedBox(
-                  height: 40,
-                  width: 150,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: primaryColor,
-                      ),
-                      onPressed: () {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) {
-                          return Home(lat: lat, long: long);
-                        }));
-                      },
-                      child: const Text("Login")),
-                ),
-              ),
-              // BlocConsumer<TokoBlocs, TokoState>(listener: (context, state) {
-              //   if (state is UserLoadedState) {
-              //     debugPrint("Berhasil Login");
-              //     context.read<TokoBlocs>().add(LoadTokoEvent());
-              //     Navigator.push(context, MaterialPageRoute(builder: (context) {
-              //       return Home(lat: lat, long: long);
-              //     }));
-              //   }
-              //   if (state is UserErrorState) {
-              //     debugPrint("Gagal Login");
-              //   }
-              // }, builder: (context, state) {
-              //   return ClipRRect(
-              //     borderRadius: BorderRadius.circular(18),
-              //     child: SizedBox(
-              //       height: 40,
-              //       width: 150,
-              //       child: ElevatedButton(
-              //           style: ElevatedButton.styleFrom(
-              //             primary: primaryColor,
-              //           ),
-              //           onPressed: () {
-              //             context.read<TokoBlocs>().add(LoadUserEvent(
-              //                 emailController.text, passwordController.text));
-              //           },
-              //           child: const Text("Login")),
-              //     ),
-              //   );
-              // }),
+              // ClipRRect(
+              //   borderRadius: BorderRadius.circular(18),
+              //   child: SizedBox(
+              //     height: 40,
+              //     width: 150,
+              //     child: ElevatedButton(
+              //         style: ElevatedButton.styleFrom(
+              //           primary: primaryColor,
+              //         ),
+              //         onPressed: () {
+              //           Navigator.pushReplacement(context,
+              //               MaterialPageRoute(builder: (context) {
+              //             return Home(lat: lat, long: long);
+              //           }));
+              //         },
+              //         child: const Text("Login")),
+              //   ),
+              // ),
+              BlocConsumer<TokoBlocs, TokoState>(listener: (context, state) {
+                if (state is UserLoadedState) {
+                  debugPrint("Berhasil Login");
+                  context.read<TokoBlocs>().add(LoadTokoEvent());
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return Home(lat: lat, long: long);
+                  }));
+                }
+                if (state is UserErrorState) {
+                  debugPrint("Gagal Login");
+                }
+              }, builder: (context, state) {
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(18),
+                  child: SizedBox(
+                    height: 40,
+                    width: 150,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: primaryColor,
+                        ),
+                        onPressed: () {
+                          context.read<TokoBlocs>().add(LoadUserEvent(
+                              emailController.text, passwordController.text));
+                        },
+                        child: const Text("Login")),
+                  ),
+                );
+              }),
             ],
           ),
         ),

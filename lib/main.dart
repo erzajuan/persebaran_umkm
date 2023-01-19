@@ -38,13 +38,15 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Persebaran UMKM',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const LoginPage(),
-    );
+    return BlocProvider<TokoBlocs>(
+        create: (BuildContext context) => TokoBlocs(),
+        child: MaterialApp(
+          title: 'Persebaran UMKM',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: const LoginPage(),
+        ));
     // home: SplashScreen(),
   }
 }
