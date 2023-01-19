@@ -2,29 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:persebaran_umkm/common/style.dart';
 import 'package:persebaran_umkm/model/toko_model.dart';
+import 'package:persebaran_umkm/model/umkm_model/data_list_umkm.dart';
 import 'package:persebaran_umkm/pages/tracking.dart';
 
 class Detail extends StatelessWidget {
-  final Toko umkm;
-  // final DataListUmkm umkms;
+  final DataListUmkm umkms;
   final double lat;
   final double long;
 
-  const Detail({
-    super.key,
-    required this.umkm,
-    required this.lat,
-    required this.long,
-    // required this.umkms
-  });
+  const Detail(
+      {super.key, required this.lat, required this.long, required this.umkms});
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return DetailMobilePage(
-          umkm: umkm,
-          // umkms: umkms,
+          umkms: umkms,
           lat: lat,
           long: long,
         );
@@ -34,18 +28,12 @@ class Detail extends StatelessWidget {
 }
 
 class DetailMobilePage extends StatelessWidget {
-  final Toko umkm;
-  // final DataListUmkm umkms;
+  final DataListUmkm umkms;
   final double lat;
   final double long;
 
-  const DetailMobilePage({
-    super.key,
-    required this.umkm,
-    required this.lat,
-    required this.long,
-    // required this.umkms
-  });
+  const DetailMobilePage(
+      {super.key, required this.lat, required this.long, required this.umkms});
 
   @override
   Widget build(BuildContext context) {
@@ -60,14 +48,11 @@ class DetailMobilePage extends StatelessWidget {
                 child: Stack(
                   children: [
                     ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(18),
-                        bottomRight: Radius.circular(18),
-                      ),
-                      child: Image.asset(
-                        umkm.imageAsset,
-                      ),
-                    ),
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(18),
+                          bottomRight: Radius.circular(18),
+                        ),
+                        child: Image.network(umkms.link_gambar)),
                     SafeArea(
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
@@ -91,10 +76,9 @@ class DetailMobilePage extends StatelessWidget {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
                                     return Tracking(
-                                      destination: LatLng(umkm.lat, umkm.long
-                                          // double.parse(umkm.lat),
-                                          // double.parse(umkm.long)
-                                          ),
+                                      destination: LatLng(
+                                          double.parse(umkms.lat),
+                                          double.parse(umkms.long)),
                                       sourceLocation: LatLng(lat, long),
                                     );
                                   }));
@@ -134,7 +118,7 @@ class DetailMobilePage extends StatelessWidget {
                                           ),
                                           const SizedBox(height: 8.0),
                                           Text(
-                                            umkm.openDays,
+                                            umkms.openDays,
                                             style:
                                                 body.apply(color: whiteColor),
                                           ),
@@ -148,7 +132,7 @@ class DetailMobilePage extends StatelessWidget {
                                           ),
                                           const SizedBox(height: 8.0),
                                           Text(
-                                            umkm.openTime,
+                                            umkms.openTime,
                                             style:
                                                 body.apply(color: whiteColor),
                                           ),
@@ -168,14 +152,14 @@ class DetailMobilePage extends StatelessWidget {
               ),
               Container(
                 margin: const EdgeInsets.only(top: 16.0),
-                child: Text(umkm.name,
+                child: Text(umkms.name,
                     textAlign: TextAlign.center,
                     style: heading1.apply(fontSizeDelta: 16)),
               ),
               Container(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
-                  umkm.description,
+                  umkms.description,
                   textAlign: TextAlign.center,
                   style: body,
                 ),
@@ -190,46 +174,12 @@ class DetailMobilePage extends StatelessWidget {
                   style: heading1,
                 ),
               ),
-              SizedBox(
-                height: 150,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: ((context, index) {
-                    final menu = umkm.imageUrls[index];
-                    return SizedBox(
-                      height: 300,
-                      child: Card(
-                        child: Column(
-                          children: [
-                            Expanded(
-                              flex: 6,
-                              child: Image.asset(
-                                menu.gambar,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                menu.nama,
-                                style: heading2.apply(color: primaryColor),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                menu.harga,
-                                style: body,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
-                  itemCount: umkm.imageUrls.length,
-                ),
-              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(umkms.link_menu)),
+              )
             ],
           ),
         ),

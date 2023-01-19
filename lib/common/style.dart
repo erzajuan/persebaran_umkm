@@ -5,6 +5,7 @@ const String google_api_key = "AIzaSyBsbRwgqiOqPTRdoyrWzXPidCz8itprLds";
 
 const Color whiteColor = Color(0xFFFFFFFF);
 const Color primaryColor = Color(0xFF82954B);
+const Color blackColor = Color(0xFF000000);
 
 const FontWeight normal = FontWeight.w400;
 const FontWeight medium = FontWeight.w500;

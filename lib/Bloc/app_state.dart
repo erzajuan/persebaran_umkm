@@ -15,12 +15,11 @@ class TokoLoadingState extends TokoState {
 
 //data loaded state
 class TokoLoadedState extends TokoState {
-  TokoLoadedState(this.umkm);
-  // final List<DataListUmkm>? umkms;
-  final List<Toko> umkm;
+  TokoLoadedState(this.umkms);
+  final List<DataListUmkm>? umkms;
 
   @override
-  List<Object?> get props => [umkm];
+  List<Object?> get props => [umkms];
 }
 
 //data error state

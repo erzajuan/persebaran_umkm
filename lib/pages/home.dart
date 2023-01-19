@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:persebaran_umkm/Bloc/app_event.dart';
 import 'package:persebaran_umkm/Bloc/app_state.dart';
 import 'package:persebaran_umkm/model/toko_model.dart';
+import 'package:persebaran_umkm/model/umkm_model/data_list_umkm.dart';
+import 'package:persebaran_umkm/pages/profile.dart';
 import '../Bloc/app_blocs.dart';
 import '../common/style.dart';
 import 'detail.dart';
@@ -19,18 +21,24 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("UMKM Semarang",
-              style: TextStyle(color: Colors.white, fontSize: 22)),
-          backgroundColor: primaryColor,
-        ),
+            title: const Text("UMKM Semarang",
+                style: TextStyle(color: Colors.white, fontSize: 22)),
+            backgroundColor: primaryColor,
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.account_circle_outlined),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const Profile();
+                  }));
+                },
+              ),
+            ]),
         body: BlocProvider(
-          create: (context) => TokoBlocs()..add(LoadTokoEvent()),
-          child: RefreshIndicator(
-              onRefresh: () async {
-                TokoList(lat: lat, long: long);
-              },
-              child: TokoList(lat: lat, long: long)),
-        ));
+            create: (BuildContext context) {
+              return TokoBlocs()..add(LoadTokoEvent());
+            },
+            child: TokoList(lat: lat, long: long)));
   }
 }
 
@@ -68,23 +76,22 @@ class TokoList extends StatelessWidget {
         BlocBuilder<TokoBlocs, TokoState>(
           builder: (context, state) {
             if (state is TokoLoadingState) {
+              debugPrint("Loading State");
               return const CircularProgressIndicator();
             }
             if (state is TokoLoadedState) {
               return Expanded(
                 child: ListView.builder(
-                  itemCount: state.umkm.length,
+                  itemCount: state.umkms?.length,
                   itemBuilder: (_, index) {
-                    // List<DataListUmkm>? umkms = state.umkms;
-                    List<Toko> umkm = state.umkm;
+                    List<DataListUmkm>? umkms = state.umkms;
                     var formatter = NumberFormat('#.##');
                     return InkWell(
                       onTap: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           return Detail(
-                            umkm: umkm[index],
-                            // umkms: umkms[index],
+                            umkms: umkms[index],
                             lat: lat,
                             long: long,
                           );
@@ -99,14 +106,11 @@ class TokoList extends StatelessWidget {
                               Expanded(
                                 flex: 1,
                                 child: ClipRRect(
-                                  borderRadius: const BorderRadius.only(
-                                      topRight: Radius.circular(18),
-                                      bottomRight: Radius.circular(18)),
-                                  child: Image.asset(
-                                    umkm[index].imageAsset,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
+                                    borderRadius: const BorderRadius.only(
+                                        topRight: Radius.circular(18),
+                                        bottomRight: Radius.circular(18)),
+                                    child: Image.network(
+                                        umkms![index].link_gambar)),
                               ),
                               Expanded(
                                 flex: 2,
@@ -117,21 +121,21 @@ class TokoList extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        umkm[index].name,
+                                        umkms![index].name,
                                         style: heading1,
                                       ),
                                       const SizedBox(
                                         height: 20,
                                       ),
                                       Text(
-                                        umkm[index].location,
+                                        umkms[index].location,
                                         style: body,
                                       ),
                                       const SizedBox(
                                         height: 4,
                                       ),
                                       Text(
-                                        "${formatter.format((Geolocator.distanceBetween(umkm[index].lat, umkm[index].long, lat, long) / 1000))} KM",
+                                        "${formatter.format((Geolocator.distanceBetween(double.parse(umkms[index].lat), double.parse(umkms[index].long), lat, long) / 1000))} KM",
                                         style: body,
                                       ),
                                     ],

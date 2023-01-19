@@ -11,13 +11,14 @@ import '../common/service.dart';
 class TokoBlocs extends Bloc<TokoEvents, TokoState> {
   TokoBlocs() : super(TokoLoadingState()) {
     List<DataListUmkm>? listUmkm = [];
+
     on<LoadTokoEvent>((event, emit) async {
-      emit(TokoLoadingState());
+      debugPrint("LoadTokoEvent");
       listUmkm = await UserRepository().getUsers();
+      emit(TokoLoadingState());
       try {
         debugPrint("load toko event");
-        final umkm = tokoList;
-        emit(TokoLoadedState(umkm));
+        emit(TokoLoadedState(listUmkm));
       } catch (e) {
         emit(TokoErrorState(e.toString()));
       }
@@ -33,14 +34,7 @@ class TokoBlocs extends Bloc<TokoEvents, TokoState> {
     });
     on<SearchTokoEvent>(
       (event, emit) async {
-        // final suggestion = listUmkm!.where((toko) {
-        //   final judul = toko.name.toLowerCase();
-        //   final input = event.query.toLowerCase();
-
-        //   return judul.contains(input);
-        // }).toList();
-
-        final suggestions = tokoList.where((toko) {
+        final suggestions = listUmkm!.where((toko) {
           final judul = toko.name.toLowerCase();
           final input = event.query.toLowerCase();
 
