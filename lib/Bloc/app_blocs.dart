@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persebaran_umkm/Bloc/app_event.dart';
 import 'package:persebaran_umkm/Bloc/app_state.dart';
-import 'package:persebaran_umkm/model/toko_model.dart';
 import 'package:persebaran_umkm/model/umkm_model/data_list_umkm.dart';
-import 'package:persebaran_umkm/model/umkm_model/umkm_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../common/service.dart';
 
@@ -23,14 +22,23 @@ class TokoBlocs extends Bloc<TokoEvents, TokoState> {
         emit(TokoErrorState(e.toString()));
       }
     });
+
     on<LoadUserEvent>((event, emit) async {
       try {
         final user =
             await UserRepository().authLogin(event.email, event.password);
         if (user!.success!) {
+          SharedPreferences pref = await SharedPreferences.getInstance();
+          pref.setString("id", user.dataUser!.id);
+
+          pref.setString("email", user.dataUser!.email);
+          pref.setString("nama", user.dataUser!.nama);
+          pref.setString("no_telp", user.dataUser!.noTelp);
+          pref.setString("user_level", user.dataUser!.userLevel);
           emit(UserLoadedState(user));
+        } else {
+          emit(UserErrorState(user.message!));
         }
-        emit(UserErrorState(user.message ?? "Kontol Error bae bangset"));
       } catch (e) {
         emit(UserErrorState(e.toString()));
       }

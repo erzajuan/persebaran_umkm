@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:persebaran_umkm/pages/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Bloc/app_blocs.dart';
 import 'Bloc/app_event.dart';
 import 'pages/home.dart';
 
-void main() {
+Future<void> main() async {
   runApp(const MyApp());
 }
 
@@ -30,6 +31,13 @@ class _MyAppState extends State<MyApp> {
     setState(() {});
   }
 
+  Future<String> sharedPreferences() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String email = prefs.getString("email") ?? ""!;
+    return email;
+  }
+
   @override
   void initState() {
     getCurretLocation();
@@ -39,13 +47,16 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<TokoBlocs>(
-        create: (BuildContext context) => TokoBlocs(),
+        create: (BuildContext context) => TokoBlocs()..add(LoadTokoEvent()),
         child: MaterialApp(
           title: 'Persebaran UMKM',
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: const LoginPage(),
+          debugShowCheckedModeBanner: false,
+          home: sharedPreferences() == ""
+              ? Home(lat: lat, long: long)
+              : const LoginPage(),
         ));
     // home: SplashScreen(),
   }

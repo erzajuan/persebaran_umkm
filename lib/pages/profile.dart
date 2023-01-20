@@ -1,11 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:persebaran_umkm/common/style.dart';
+import 'package:persebaran_umkm/pages/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({super.key});
 
   @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  var id = "";
+  var email = "";
+  var nama = "";
+  var noTelp = "";
+  var userLevel = "";
+
+  Future<void> sharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    id = prefs.getString("id")!;
+    email = prefs.getString("email")!;
+    nama = prefs.getString("nama")!;
+    noTelp = prefs.getString("no_telp")!;
+    userLevel = prefs.getString("user_level")!;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    sharedPreferences();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    sharedPreferences();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -27,11 +57,15 @@ class Profile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Name",
+                          nama,
                           style: heading2,
                         ),
                         Text(
-                          "No Telephone",
+                          email,
+                          style: heading2,
+                        ),
+                        Text(
+                          id,
                           style: heading2,
                         ),
                       ],
@@ -87,7 +121,18 @@ class Profile extends StatelessWidget {
                 child: Align(
                   alignment: FractionalOffset.bottomCenter,
                   child: TextButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        SharedPreferences pref =
+                            await SharedPreferences.getInstance();
+                        pref.remove("email");
+                        pref.remove("nama");
+                        pref.remove("no_telp");
+                        pref.remove("user_level");
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (_) {
+                          return const LoginPage();
+                        }));
+                      },
                       child: Text(
                         "Log Out",
                         style: heading1,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:persebaran_umkm/common/style.dart';
-import 'package:persebaran_umkm/model/toko_model.dart';
 import 'package:persebaran_umkm/model/umkm_model/data_list_umkm.dart';
 import 'package:persebaran_umkm/pages/tracking.dart';
 

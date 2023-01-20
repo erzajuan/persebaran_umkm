@@ -1,8 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:persebaran_umkm/model/toko_model.dart';
 import 'package:persebaran_umkm/model/umkm_model/data_list_umkm.dart';
-import 'package:persebaran_umkm/model/user/data_user.dart';
 import 'package:persebaran_umkm/model/user/user.dart';
 
 @immutable

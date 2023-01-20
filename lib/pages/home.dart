@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:persebaran_umkm/Bloc/app_event.dart';
 import 'package:persebaran_umkm/Bloc/app_state.dart';
-import 'package:persebaran_umkm/model/toko_model.dart';
 import 'package:persebaran_umkm/model/umkm_model/data_list_umkm.dart';
 import 'package:persebaran_umkm/pages/profile.dart';
 import '../Bloc/app_blocs.dart';
@@ -74,7 +73,7 @@ class TokoList extends StatelessWidget {
             builder: (context, state) {
               if (state is TokoLoadingState) {
                 debugPrint("Loading State");
-                return const CircularProgressIndicator();
+                return const Center(child: CircularProgressIndicator());
               }
               if (state is TokoLoadedState) {
                 return ListView.builder(
@@ -99,36 +98,43 @@ class TokoList extends StatelessWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              ClipRRect(
-                                  borderRadius: const BorderRadius.only(
-                                      topRight: Radius.circular(18),
-                                      bottomRight: Radius.circular(18)),
-                                  child:
-                                      Image.network(umkms![index].link_gambar)),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      umkms![index].name,
-                                      style: heading1,
-                                    ),
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                    Text(
-                                      umkms[index].location,
-                                      style: body,
-                                    ),
-                                    const SizedBox(
-                                      height: 4,
-                                    ),
-                                    Text(
-                                      "${formatter.format((Geolocator.distanceBetween(double.parse(umkms[index].lat), double.parse(umkms[index].long), lat, long) / 1000))} KM",
-                                      style: body,
-                                    ),
-                                  ],
+                              Expanded(
+                                flex: 1,
+                                child: ClipRRect(
+                                    borderRadius: const BorderRadius.only(
+                                        topRight: Radius.circular(18),
+                                        bottomRight: Radius.circular(18)),
+                                    child: Image.network(
+                                        umkms![index].link_gambar)),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        umkms[index].name,
+                                        style: heading1,
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      Text(
+                                        umkms[index].location,
+                                        style: body,
+                                      ),
+                                      const SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        "${formatter.format((Geolocator.distanceBetween(double.parse(umkms[index].lat), double.parse(umkms[index].long), lat, long) / 1000))} KM",
+                                        style: body,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               )
                             ],
@@ -140,13 +146,14 @@ class TokoList extends StatelessWidget {
                 );
               }
               if (state is TokoErrorState) {
-                return const Center(
-                  child: Text("Error"),
+                return Center(
+                  child: Text(
+                    "Terjadi KEsalahan",
+                    style: heading1,
+                  ),
                 );
               }
-              return const Center(
-                child: Text("Error"),
-              );
+              return const Center(child: CircularProgressIndicator());
             },
           ),
         ),

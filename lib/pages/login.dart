@@ -6,6 +6,7 @@ import 'package:persebaran_umkm/Bloc/app_event.dart';
 import 'package:persebaran_umkm/Bloc/app_state.dart';
 import 'package:persebaran_umkm/common/style.dart';
 import 'package:persebaran_umkm/pages/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -97,29 +98,12 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 15,
               ),
-              // ClipRRect(
-              //   borderRadius: BorderRadius.circular(18),
-              //   child: SizedBox(
-              //     height: 40,
-              //     width: 150,
-              //     child: ElevatedButton(
-              //         style: ElevatedButton.styleFrom(
-              //           primary: primaryColor,
-              //         ),
-              //         onPressed: () {
-              //           Navigator.pushReplacement(context,
-              //               MaterialPageRoute(builder: (context) {
-              //             return Home(lat: lat, long: long);
-              //           }));
-              //         },
-              //         child: const Text("Login")),
-              //   ),
-              // ),
               BlocConsumer<TokoBlocs, TokoState>(listener: (context, state) {
                 if (state is UserLoadedState) {
                   debugPrint("Berhasil Login");
                   context.read<TokoBlocs>().add(LoadTokoEvent());
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) {
                     return Home(lat: lat, long: long);
                   }));
                 }
@@ -134,11 +118,14 @@ class _LoginPageState extends State<LoginPage> {
                     width: 150,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: primaryColor,
+                          backgroundColor: primaryColor,
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           context.read<TokoBlocs>().add(LoadUserEvent(
                               emailController.text, passwordController.text));
+                          SharedPreferences pref =
+                              await SharedPreferences.getInstance();
+                          pref.setString("email", "");
                         },
                         child: const Text("Login")),
                   ),
