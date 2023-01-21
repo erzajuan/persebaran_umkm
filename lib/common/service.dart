@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:persebaran_umkm/model/basic_model.dart';
 import 'package:persebaran_umkm/model/umkm_model/data_list_umkm.dart';
 import 'package:persebaran_umkm/model/user/user.dart';
 
@@ -59,13 +60,26 @@ class UserRepository {
   }
 
   String endpointCreateUmkm = "/Coba/public/index.php/Api/UMKM/createUmkm";
-  Future<List<DataListUmkm>?> createUmkm() async {
+  Future<BasicModel?> createUmkm(id, name, location, description, openDays,
+      openTime, long, lat, linkGambar, linkMenu) async {
     try {
-      Response response = await get(Uri.parse(api + endpointCreateUmkm));
+      Response response =
+          await post(Uri.parse(api + endpointCreateUmkm), body: {
+        "id_user": "$id",
+        "name": "$name",
+        "location": "$location",
+        "description": "$description",
+        "openDays": "$openDays",
+        "openTime": "$openTime",
+        "long": "$long",
+        "lat": "$lat",
+        "link_gambar": "$linkGambar",
+        "link_menu": "$linkMenu"
+      });
       if (response.statusCode == 200) {
-        debugPrint("response get users ${response.body}");
-        final List result = jsonDecode(response.body)['data_list_umkm'];
-        return result.map((e) => DataListUmkm.fromJson(e)).toList();
+        debugPrint("response create UMKM ${response.body}");
+        final result = jsonDecode(response.body);
+        return BasicModel.fromJson(result);
       } else {
         debugPrint("throw error get users ${response.reasonPhrase}");
       }
@@ -75,7 +89,7 @@ class UserRepository {
     return null;
   }
 
-  String endpointUpdate = "/Coba/public/index.php/Api/UMKM/createUmkm";
+  String endpointUpdate = "/Coba/public/index.php/Api/UMKM/updateStatus";
   Future<List<DataListUmkm>?> update() async {
     try {
       Response response = await get(Uri.parse(api + endpointUpdate));

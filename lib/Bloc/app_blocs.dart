@@ -30,7 +30,6 @@ class TokoBlocs extends Bloc<TokoEvents, TokoState> {
         if (user!.success!) {
           SharedPreferences pref = await SharedPreferences.getInstance();
           pref.setString("id", user.dataUser!.id);
-
           pref.setString("email", user.dataUser!.email);
           pref.setString("nama", user.dataUser!.nama);
           pref.setString("no_telp", user.dataUser!.noTelp);
@@ -43,6 +42,27 @@ class TokoBlocs extends Bloc<TokoEvents, TokoState> {
         emit(UserErrorState(e.toString()));
       }
     });
+
+    on<CreateTokoEvent>((event, emit) async {
+      listUmkm = await UserRepository().getUmkm();
+      try {
+        final create = await UserRepository().createUmkm(
+            event.idUser,
+            event.nama,
+            event.location,
+            event.description,
+            event.openDays,
+            event.openTime,
+            event.long,
+            event.lat,
+            event.linkGambar,
+            event.linkMenu);
+        emit(TokoCreateState());
+      } catch (e) {
+        emit(TokoErrorState(e.toString()));
+      }
+    });
+
     on<SearchTokoEvent>(
       (event, emit) async {
         final suggestions = listUmkm!.where((toko) {

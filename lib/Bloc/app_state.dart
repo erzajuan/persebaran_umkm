@@ -30,6 +30,13 @@ class TokoErrorState extends TokoState {
   List<Object?> get props => [error];
 }
 
+class TokoCreateState extends TokoState {
+  TokoCreateState();
+
+  @override
+  List<Object?> get props => [];
+}
+
 //Login State
 class UserLoadedState extends TokoState {
   UserLoadedState(this.user);

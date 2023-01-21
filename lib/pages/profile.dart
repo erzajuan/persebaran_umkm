@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:persebaran_umkm/common/style.dart';
+import 'package:persebaran_umkm/pages/create_umkm.dart';
 import 'package:persebaran_umkm/pages/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -65,7 +66,7 @@ class _ProfileState extends State<Profile> {
                           style: heading2,
                         ),
                         Text(
-                          id,
+                          noTelp,
                           style: heading2,
                         ),
                       ],
@@ -74,7 +75,11 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) {
+                    return CreateUmkm();
+                  }));
+                },
                 child: Column(
                   children: [
                     const SizedBox(
