@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:persebaran_umkm/Bloc/app_blocs.dart';
+import 'package:persebaran_umkm/Bloc/app_event.dart';
 import 'package:persebaran_umkm/common/style.dart';
 import 'package:persebaran_umkm/pages/create_umkm.dart';
 import 'package:persebaran_umkm/pages/login.dart';
+import 'package:persebaran_umkm/pages/status.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
@@ -28,9 +33,22 @@ class _ProfileState extends State<Profile> {
     setState(() {});
   }
 
+  double long = 0;
+  double lat = 0;
+
+  void getCurretLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    long = position.longitude;
+    lat = position.latitude;
+
+    setState(() {});
+  }
+
   @override
   void initState() {
     sharedPreferences();
+    getCurretLocation();
     super.initState();
   }
 
@@ -100,28 +118,38 @@ class _ProfileState extends State<Profile> {
                   ],
                 ),
               ),
-              InkWell(
-                onTap: () {},
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Status UMKM",
-                      style: heading2.copyWith(fontSize: 18),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const Divider(
-                      height: 1,
-                      thickness: 1,
-                      color: blackColor,
+              nama == "admin"
+                  ? InkWell(
+                      onTap: () {
+                        context.read<TokoBlocs>().add(LoadTokoUserEvent());
+                        Navigator.push(context, MaterialPageRoute(builder: (_) {
+                          return Status(
+                            lat: lat,
+                            long: long,
+                          );
+                        }));
+                      },
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "Status UMKM",
+                            style: heading2.copyWith(fontSize: 18),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Divider(
+                            height: 1,
+                            thickness: 1,
+                            color: blackColor,
+                          )
+                        ],
+                      ),
                     )
-                  ],
-                ),
-              ),
+                  : const SizedBox(),
               Expanded(
                 child: Align(
                   alignment: FractionalOffset.bottomCenter,

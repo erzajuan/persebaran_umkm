@@ -202,22 +202,32 @@ class _CreateUmkmState extends State<CreateUmkm> {
                   // }
                 },
                 builder: (context, state) {
-                  return ElevatedButton(
-                      onPressed: () {
-                        sharedPreferences();
-                        context.read<TokoBlocs>().add(CreateTokoEvent(
-                            id,
-                            namaController.text,
-                            locationController.text,
-                            descriptionController.text,
-                            openDaysController.text,
-                            openTimeController.text,
-                            longController.text,
-                            latController.text,
-                            linkGambarController.text,
-                            linkMenuController.text));
-                      },
-                      child: Text("Daftarkan"));
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(18),
+                    child: SizedBox(
+                      height: 40,
+                      width: 150,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: primaryColor,
+                          ),
+                          onPressed: () {
+                            sharedPreferences();
+                            context.read<TokoBlocs>().add(CreateTokoEvent(
+                                id,
+                                namaController.text,
+                                locationController.text,
+                                descriptionController.text,
+                                openDaysController.text,
+                                openTimeController.text,
+                                longController.text,
+                                latController.text,
+                                linkGambarController.text,
+                                linkMenuController.text));
+                          },
+                          child: Text("Daftarkan")),
+                    ),
+                  );
                 },
               )
             ],

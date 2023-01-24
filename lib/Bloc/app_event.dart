@@ -6,6 +6,12 @@ abstract class TokoEvents extends Equatable {
   List<Object?> get props => [];
 }
 
+class LoadTokoEvent extends TokoEvents {
+  @override
+  List<Object?> get props => [];
+}
+
+//Search
 class SearchTokoEvent extends TokoEvents {
   final String query;
 
@@ -14,7 +20,8 @@ class SearchTokoEvent extends TokoEvents {
   List<Object?> get props => [query];
 }
 
-class LoadTokoEvent extends TokoEvents {
+//Auth
+class LoadTokoUserEvent extends TokoEvents {
   @override
   List<Object?> get props => [];
 }
@@ -29,6 +36,7 @@ class LoadUserEvent extends TokoEvents {
   List<Object?> get props => [email, password];
 }
 
+//Create
 class CreateTokoEvent extends TokoEvents {
   final String idUser;
   final String nama;
@@ -66,4 +74,22 @@ class CreateTokoEvent extends TokoEvents {
         linkGambar,
         linkMenu
       ];
+}
+
+class UpdateTokoEvent extends TokoEvents {
+  final String id;
+  final String status;
+
+  UpdateTokoEvent(
+    this.id,
+    this.status,
+  );
+
+  @override
+  List<Object?> get props => [];
+}
+
+class UserTokoEvent extends TokoEvents {
+  @override
+  List<Object?> get props => [];
 }

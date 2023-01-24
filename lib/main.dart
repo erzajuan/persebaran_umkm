@@ -55,8 +55,8 @@ class _MyAppState extends State<MyApp> {
           ),
           debugShowCheckedModeBanner: false,
           home: sharedPreferences() == ""
-              ? Home(lat: lat, long: long)
-              : const LoginPage(),
+              ? const LoginPage()
+              : Home(lat: lat, long: long),
         ));
     // home: SplashScreen(),
   }

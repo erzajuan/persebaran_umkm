@@ -6,7 +6,7 @@ import 'package:persebaran_umkm/model/umkm_model/data_list_umkm.dart';
 import 'package:persebaran_umkm/model/user/user.dart';
 
 class UserRepository {
-  String api = "http://172.20.10.6";
+  String api = "http://192.168.1.12";
 
   String endpointGetUmkm = "/Coba/public/index.php/Api/UMKM/getUmkm";
   Future<List<DataListUmkm>?> getUmkm() async {
@@ -89,16 +89,19 @@ class UserRepository {
     return null;
   }
 
-  String endpointUpdate = "/Coba/public/index.php/Api/UMKM/updateStatus";
-  Future<List<DataListUmkm>?> update() async {
+  String endpointUpdate = "/Coba/public/index.php/Api/UMKM/update";
+  Future<BasicModel?> update(id, status) async {
+    debugPrint("id dari update " + id);
+    debugPrint("status dari update " + status);
     try {
-      Response response = await get(Uri.parse(api + endpointUpdate));
+      Response response = await post(Uri.parse(api + endpointUpdate),
+          body: {"id": "$id", "status": "$status"});
       if (response.statusCode == 200) {
-        debugPrint("response get users ${response.body}");
-        final List result = jsonDecode(response.body)['data_list_umkm'];
-        return result.map((e) => DataListUmkm.fromJson(e)).toList();
+        debugPrint("Status Sudah Approved${response.body}");
+        final result = jsonDecode(response.body);
+        return BasicModel.fromJson(result);
       } else {
-        debugPrint("throw error get upda ${response.reasonPhrase}");
+        debugPrint("throw error get update ${response.reasonPhrase}");
       }
     } catch (e) {
       debugPrint("Catch Error getUsers $e");

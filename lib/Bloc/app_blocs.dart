@@ -10,8 +10,21 @@ import '../common/service.dart';
 class TokoBlocs extends Bloc<TokoEvents, TokoState> {
   TokoBlocs() : super(TokoLoadingState()) {
     List<DataListUmkm>? listUmkm = [];
+    List<DataListUmkm>? listUmkmUser = [];
 
     on<LoadTokoEvent>((event, emit) async {
+      debugPrint("LoadTokoEvent");
+      listUmkmUser = await UserRepository().getUmkmUsers();
+      emit(TokoLoadingState());
+      try {
+        debugPrint("load toko event");
+        emit(TokoLoadedState(listUmkmUser));
+      } catch (e) {
+        emit(TokoErrorState(e.toString()));
+      }
+    });
+
+    on<LoadTokoUserEvent>((event, emit) async {
       debugPrint("LoadTokoEvent");
       listUmkm = await UserRepository().getUmkm();
       emit(TokoLoadingState());
@@ -43,10 +56,29 @@ class TokoBlocs extends Bloc<TokoEvents, TokoState> {
       }
     });
 
-    on<CreateTokoEvent>((event, emit) async {
-      listUmkm = await UserRepository().getUmkm();
+    on<UpdateTokoEvent>((event, emit) async {
+      listUmkm = await UserRepository().getUmkmUsers();
       try {
-        final create = await UserRepository().createUmkm(
+        await UserRepository().update(event.id, event.status);
+        emit(TokoUpdateState());
+      } catch (e) {
+        emit(TokoErrorState(e.toString()));
+      }
+    });
+
+    on<UserTokoEvent>((event, emit) async {
+      listUmkmUser = await UserRepository().getUmkmUsers();
+      try {
+        emit(TokoUserState());
+      } catch (e) {
+        emit(TokoErrorState(e.toString()));
+      }
+    });
+
+    on<CreateTokoEvent>((event, emit) async {
+      listUmkmUser = await UserRepository().getUmkmUsers();
+      try {
+        await UserRepository().createUmkm(
             event.idUser,
             event.nama,
             event.location,
