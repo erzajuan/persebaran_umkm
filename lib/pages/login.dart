@@ -6,6 +6,7 @@ import 'package:persebaran_umkm/Bloc/app_event.dart';
 import 'package:persebaran_umkm/Bloc/app_state.dart';
 import 'package:persebaran_umkm/common/style.dart';
 import 'package:persebaran_umkm/pages/home.dart';
+import 'package:persebaran_umkm/pages/register.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -102,10 +103,10 @@ class _LoginPageState extends State<LoginPage> {
                 if (state is UserLoadedState) {
                   debugPrint("Berhasil Login");
                   context.read<TokoBlocs>().add(LoadTokoEvent());
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) {
-                    return Home(lat: lat, long: long);
-                  }));
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => Home(lat: lat, long: long)),
+                      (Route<dynamic> route) => false);
                 }
                 if (state is UserErrorState) {
                   debugPrint("Gagal Login");
@@ -115,13 +116,13 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: BorderRadius.circular(18),
                   child: SizedBox(
                     height: 40,
-                    width: 150,
+                    width: 300,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: primaryColor,
                         ),
                         onPressed: () async {
-                          context.read<TokoBlocs>().add(LoadUserEvent(
+                          context.read<TokoBlocs>().add(LoginUserEvent(
                               emailController.text, passwordController.text));
                           SharedPreferences pref =
                               await SharedPreferences.getInstance();
@@ -131,6 +132,27 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 );
               }),
+              const SizedBox(
+                height: 15,
+              ),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(18),
+                child: SizedBox(
+                  height: 40,
+                  width: 300,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryColor,
+                      ),
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return RegisterPage();
+                        }));
+                      },
+                      child: const Text("Register")),
+                ),
+              ),
             ],
           ),
         ),

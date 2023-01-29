@@ -62,6 +62,10 @@ class _CreateUmkmState extends State<CreateUmkm> {
           padding: const EdgeInsets.all(18.0),
           child: Column(
             children: [
+              Text(
+                "Masukan Nama UMKM",
+                style: heading1,
+              ),
               TextField(
                 controller: namaController,
                 decoration: InputDecoration(
@@ -75,6 +79,10 @@ class _CreateUmkmState extends State<CreateUmkm> {
               ),
               const SizedBox(
                 height: 15,
+              ),
+              Text(
+                "Masukan Lokasi UMKM",
+                style: heading1,
               ),
               TextField(
                 controller: locationController,
@@ -90,6 +98,10 @@ class _CreateUmkmState extends State<CreateUmkm> {
               const SizedBox(
                 height: 15,
               ),
+              Text(
+                "Masukan Deskripsi UMKM",
+                style: heading1,
+              ),
               TextField(
                 controller: descriptionController,
                 decoration: InputDecoration(
@@ -103,6 +115,10 @@ class _CreateUmkmState extends State<CreateUmkm> {
               ),
               const SizedBox(
                 height: 15,
+              ),
+              Text(
+                "Masukan Hari Buka UMKM",
+                style: heading1,
               ),
               TextField(
                 controller: openDaysController,
@@ -118,6 +134,10 @@ class _CreateUmkmState extends State<CreateUmkm> {
               const SizedBox(
                 height: 15,
               ),
+              Text(
+                "Masukan Jam Buka UMKM",
+                style: heading1,
+              ),
               TextField(
                 controller: openTimeController,
                 decoration: InputDecoration(
@@ -131,6 +151,10 @@ class _CreateUmkmState extends State<CreateUmkm> {
               ),
               const SizedBox(
                 height: 15,
+              ),
+              Text(
+                "Masukan Long UMKM",
+                style: heading1,
               ),
               TextField(
                 controller: longController,
@@ -146,6 +170,10 @@ class _CreateUmkmState extends State<CreateUmkm> {
               const SizedBox(
                 height: 15,
               ),
+              Text(
+                "Masukan Latitude UMKM",
+                style: heading1,
+              ),
               TextField(
                 controller: latController,
                 decoration: InputDecoration(
@@ -160,6 +188,10 @@ class _CreateUmkmState extends State<CreateUmkm> {
               const SizedBox(
                 height: 15,
               ),
+              Text(
+                "Masukan Link Gambar UMKM",
+                style: heading1,
+              ),
               TextField(
                 controller: linkGambarController,
                 decoration: InputDecoration(
@@ -173,6 +205,10 @@ class _CreateUmkmState extends State<CreateUmkm> {
               ),
               const SizedBox(
                 height: 15,
+              ),
+              Text(
+                "Masukan Link Gambar Menu UMKM",
+                style: heading1,
               ),
               TextField(
                 controller: linkMenuController,
@@ -192,14 +228,11 @@ class _CreateUmkmState extends State<CreateUmkm> {
                 listener: (context, state) {
                   if (state is TokoCreateState) {
                     context.read<TokoBlocs>().add(LoadTokoEvent());
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) {
-                      return Home(lat: lat, long: long);
-                    }));
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => Home(lat: lat, long: long)),
+                        (Route<dynamic> route) => false);
                   }
-                  // if (state is TokoErrorState) {
-
-                  // }
                 },
                 builder: (context, state) {
                   return ClipRRect(

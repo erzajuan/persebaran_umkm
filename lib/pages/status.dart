@@ -146,12 +146,17 @@ class StatusList extends StatelessWidget {
                                                 context
                                                     .read<TokoBlocs>()
                                                     .add(LoadTokoUserEvent());
-                                                Navigator.pushReplacement(
-                                                    context, MaterialPageRoute(
-                                                        builder: (context) {
-                                                  return Home(
-                                                      lat: lat, long: long);
-                                                }));
+                                                Navigator.of(context)
+                                                    .pushAndRemoveUntil(
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                Home(
+                                                                    lat: lat,
+                                                                    long:
+                                                                        long)),
+                                                        (Route<dynamic>
+                                                                route) =>
+                                                            false);
                                               }
                                             }, builder: (context, state) {
                                               return Expanded(

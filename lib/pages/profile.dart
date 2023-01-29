@@ -161,10 +161,10 @@ class _ProfileState extends State<Profile> {
                         pref.remove("nama");
                         pref.remove("no_telp");
                         pref.remove("user_level");
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (_) {
-                          return const LoginPage();
-                        }));
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => const LoginPage()),
+                            (Route<dynamic> route) => false);
                       },
                       child: Text(
                         "Log Out",

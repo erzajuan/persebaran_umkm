@@ -26,11 +26,23 @@ class LoadTokoUserEvent extends TokoEvents {
   List<Object?> get props => [];
 }
 
-class LoadUserEvent extends TokoEvents {
+class LoginUserEvent extends TokoEvents {
   final String email;
   final String password;
 
-  LoadUserEvent(this.email, this.password);
+  LoginUserEvent(this.email, this.password);
+
+  @override
+  List<Object?> get props => [email, password];
+}
+
+class UserRegistrasiEvent extends TokoEvents {
+  final String nama;
+  final String email;
+  final String password;
+  final String noTelp;
+
+  UserRegistrasiEvent(this.nama, this.email, this.password, this.noTelp);
 
   @override
   List<Object?> get props => [email, password];

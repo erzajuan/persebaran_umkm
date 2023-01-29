@@ -126,4 +126,27 @@ class UserRepository {
     }
     return null;
   }
+
+  String endpointRegister = "/Coba/public/index.php/Api/Auth/register";
+  Future<BasicModel?> authRegister(nama, email, password, noTelp) async {
+    try {
+      Response response = await post(Uri.parse(api + endpointRegister), body: {
+        'nama': '$nama',
+        'email': '$email',
+        'password': '$password',
+        'no_telp': '$noTelp',
+        'user_level': 'user'
+      });
+      if (response.statusCode == 200) {
+        debugPrint("response post Register ${response.body}");
+        final result = jsonDecode(response.body);
+        return BasicModel.fromJson(result);
+      } else {
+        debugPrint("throw error post register ${response.reasonPhrase}");
+      }
+    } catch (e) {
+      debugPrint("Catch Error register $e");
+    }
+    return null;
+  }
 }

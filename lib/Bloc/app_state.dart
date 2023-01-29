@@ -67,3 +67,10 @@ class TokoUserState extends TokoState {
   @override
   List<Object?> get props => [];
 }
+
+class RegisterState extends TokoState {
+  RegisterState();
+
+  @override
+  List<Object?> get props => [];
+}

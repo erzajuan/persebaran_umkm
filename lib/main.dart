@@ -22,6 +22,8 @@ class _MyAppState extends State<MyApp> {
   double long = 0;
   double lat = 0;
 
+  String email = "";
+
   void getCurretLocation() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -34,7 +36,7 @@ class _MyAppState extends State<MyApp> {
   Future<String> sharedPreferences() async {
     WidgetsFlutterBinding.ensureInitialized();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String email = prefs.getString("email") ?? ""!;
+    String email = prefs.getString("email")!;
     return email;
   }
 
@@ -46,6 +48,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    sharedPreferences();
     return BlocProvider<TokoBlocs>(
         create: (BuildContext context) => TokoBlocs()..add(LoadTokoEvent()),
         child: MaterialApp(
@@ -54,9 +57,7 @@ class _MyAppState extends State<MyApp> {
             primarySwatch: Colors.blue,
           ),
           debugShowCheckedModeBanner: false,
-          home: sharedPreferences() == ""
-              ? const LoginPage()
-              : Home(lat: lat, long: long),
+          home: email == "" ? const LoginPage() : Home(lat: lat, long: long),
         ));
     // home: SplashScreen(),
   }

@@ -36,7 +36,7 @@ class TokoBlocs extends Bloc<TokoEvents, TokoState> {
       }
     });
 
-    on<LoadUserEvent>((event, emit) async {
+    on<LoginUserEvent>((event, emit) async {
       try {
         final user =
             await UserRepository().authLogin(event.email, event.password);
@@ -90,6 +90,21 @@ class TokoBlocs extends Bloc<TokoEvents, TokoState> {
             event.linkGambar,
             event.linkMenu);
         emit(TokoCreateState());
+      } catch (e) {
+        emit(TokoErrorState(e.toString()));
+      }
+    });
+
+    on<UserRegistrasiEvent>((event, emit) async {
+      listUmkmUser = await UserRepository().getUmkmUsers();
+      try {
+        await UserRepository().authRegister(
+          event.nama,
+          event.email,
+          event.password,
+          event.noTelp,
+        );
+        emit(RegisterState());
       } catch (e) {
         emit(TokoErrorState(e.toString()));
       }
