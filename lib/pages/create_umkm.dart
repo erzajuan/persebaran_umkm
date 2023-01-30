@@ -148,12 +148,13 @@ class _CreateUmkmState extends State<CreateUmkm> {
                     borderSide: const BorderSide(color: primaryColor),
                   ),
                 ),
+                keyboardType: TextInputType.number,
               ),
               const SizedBox(
                 height: 15,
               ),
               Text(
-                "Masukan Long UMKM",
+                "Masukan Longitude UMKM",
                 style: heading1,
               ),
               TextField(
@@ -166,6 +167,7 @@ class _CreateUmkmState extends State<CreateUmkm> {
                     borderSide: const BorderSide(color: primaryColor),
                   ),
                 ),
+                keyboardType: TextInputType.text,
               ),
               const SizedBox(
                 height: 15,
@@ -184,6 +186,7 @@ class _CreateUmkmState extends State<CreateUmkm> {
                     borderSide: const BorderSide(color: primaryColor),
                   ),
                 ),
+                keyboardType: TextInputType.text,
               ),
               const SizedBox(
                 height: 15,
@@ -258,7 +261,7 @@ class _CreateUmkmState extends State<CreateUmkm> {
                                 linkGambarController.text,
                                 linkMenuController.text));
                           },
-                          child: Text("Daftarkan")),
+                          child: const Text("Daftarkan")),
                     ),
                   );
                 },

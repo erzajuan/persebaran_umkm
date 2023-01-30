@@ -6,7 +6,7 @@ import 'package:persebaran_umkm/model/umkm_model/data_list_umkm.dart';
 import 'package:persebaran_umkm/model/user/user.dart';
 
 class UserRepository {
-  String api = "http://192.168.1.12";
+  String api = "172.20.10.6";
 
   String endpointGetUmkm = "/Coba/public/index.php/Api/UMKM/getUmkm";
   Future<List<DataListUmkm>?> getUmkm() async {
@@ -115,14 +115,14 @@ class UserRepository {
       Response response = await post(Uri.parse(api + endpointLogin),
           body: {'email': '$email', 'password': '$password'});
       if (response.statusCode == 200) {
-        debugPrint("response get users login ${response.body}");
+        debugPrint("response user login ${response.body}");
         final result = jsonDecode(response.body);
         return UserModel.fromJson(result);
       } else {
-        debugPrint("throw error get users login ${response.reasonPhrase}");
+        debugPrint("throw error user login ${response.reasonPhrase}");
       }
     } catch (e) {
-      debugPrint("Catch Error getUsers $e");
+      debugPrint("Catch Error user login $e");
     }
     return null;
   }

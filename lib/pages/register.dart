@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persebaran_umkm/Bloc/app_blocs.dart';
 import 'package:persebaran_umkm/Bloc/app_event.dart';
@@ -43,6 +44,7 @@ class RegisterPage extends StatelessWidget {
                         borderSide: const BorderSide(color: primaryColor),
                       ),
                     ),
+                    keyboardType: TextInputType.name,
                   ),
                   const SizedBox(
                     height: 15,
@@ -64,6 +66,7 @@ class RegisterPage extends StatelessWidget {
                         borderSide: const BorderSide(color: primaryColor),
                       ),
                     ),
+                    keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(
                     height: 15,
@@ -85,6 +88,7 @@ class RegisterPage extends StatelessWidget {
                         borderSide: const BorderSide(color: primaryColor),
                       ),
                     ),
+                    keyboardType: TextInputType.text,
                   ),
                   const SizedBox(
                     height: 15,
@@ -106,6 +110,7 @@ class RegisterPage extends StatelessWidget {
                         borderSide: const BorderSide(color: primaryColor),
                       ),
                     ),
+                    keyboardType: TextInputType.number,
                   ),
                   const SizedBox(
                     height: 15,

@@ -50,6 +50,13 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Text(
+                "Persebaran UMKM",
+                style: heading1.copyWith(fontSize: 36),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
               TextField(
                 controller: emailController,
                 decoration: InputDecoration(
@@ -63,6 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                     borderSide: const BorderSide(color: primaryColor),
                   ),
                 ),
+                keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(
                 height: 15,
@@ -97,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                 autocorrect: false,
               ),
               const SizedBox(
-                height: 15,
+                height: 12,
               ),
               BlocConsumer<TokoBlocs, TokoState>(listener: (context, state) {
                 if (state is UserLoadedState) {
@@ -108,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                           builder: (context) => Home(lat: lat, long: long)),
                       (Route<dynamic> route) => false);
                 }
-                if (state is UserErrorState) {
+                if (state is! UserErrorState) {
                   debugPrint("Gagal Login");
                 }
               }, builder: (context, state) {
@@ -133,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                 );
               }),
               const SizedBox(
-                height: 15,
+                height: 12,
               ),
               ClipRRect(
                 borderRadius: BorderRadius.circular(18),

@@ -40,7 +40,7 @@ class TokoBlocs extends Bloc<TokoEvents, TokoState> {
       try {
         final user =
             await UserRepository().authLogin(event.email, event.password);
-        if (user!.success!) {
+        if (user!.success! == true) {
           SharedPreferences pref = await SharedPreferences.getInstance();
           pref.setString("id", user.dataUser!.id);
           pref.setString("email", user.dataUser!.email);
@@ -48,7 +48,8 @@ class TokoBlocs extends Bloc<TokoEvents, TokoState> {
           pref.setString("no_telp", user.dataUser!.noTelp);
           pref.setString("user_level", user.dataUser!.userLevel);
           emit(UserLoadedState(user));
-        } else {
+        }
+        if (user.success == false) {
           emit(UserErrorState(user.message!));
         }
       } catch (e) {
