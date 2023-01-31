@@ -188,7 +188,7 @@ class StatusList extends StatelessWidget {
               if (state is TokoErrorState) {
                 return Center(
                   child: Text(
-                    "Terjadi KEsalahan",
+                    "Terjadi Kesalahan",
                     style: heading1,
                   ),
                 );

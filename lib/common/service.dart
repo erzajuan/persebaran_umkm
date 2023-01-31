@@ -6,7 +6,7 @@ import 'package:persebaran_umkm/model/umkm_model/data_list_umkm.dart';
 import 'package:persebaran_umkm/model/user/user.dart';
 
 class UserRepository {
-  String api = "172.20.10.6";
+  String api = "http://192.168.1.12";
 
   String endpointGetUmkm = "/Coba/public/index.php/Api/UMKM/getUmkm";
   Future<List<DataListUmkm>?> getUmkm() async {

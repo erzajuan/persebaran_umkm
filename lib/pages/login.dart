@@ -116,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                           builder: (context) => Home(lat: lat, long: long)),
                       (Route<dynamic> route) => false);
                 }
-                if (state is! UserErrorState) {
+                if (state is UserErrorState) {
                   debugPrint("Gagal Login");
                 }
               }, builder: (context, state) {
